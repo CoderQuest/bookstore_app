@@ -24,4 +24,31 @@ RSpec.describe AuthorsController, :type => :controller do
 			expect(response).to have_http_status(:success)
 		end
 	end
+
+	#sending data to the server, use post request
+	describe "POST #create" do 
+		context "a sucessful create" do
+			it "saves the new author object" do
+				post :create, author: Fabricate.attributes_for(:author) # use fabricate to create an author object in the server
+
+				expect(Author.count).to eq(1)
+			end
+
+			it "redirects to the author show action" do
+				post :create, author: Fabricate.attributes_for(:author)
+
+				expect(response).to redirect_to author_path(Author.last)
+			end
+
+			it "sets the success flash message" do
+				post :create, author: Fabricate.attributes_for(:author)
+
+				expect(flash[:success]).to eq("Author has been created")
+			end
+		end
+
+		context "a unsucessful create" do 
+
+		end
+	end
 end
