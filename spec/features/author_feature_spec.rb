@@ -1,8 +1,9 @@
 require 'rails_helper'
-
+# using capybara for feature test
+# 
 RSpec.feature "Creating Authors" do
 	scenario "with valid inputs succeeds" do
-		visit root_path   # or use '/'. Visit is a capabara method
+		visit root_path   # or use '/'
 
 		click_link "Authors"
 		click_link "Add New author"
@@ -13,5 +14,19 @@ RSpec.feature "Creating Authors" do
 		click_button "Create Author"
 
 		expect(page).to have_content("Author has been created")
+	end
+
+	scenario "with invalid inputs fails" do
+		visit root_path   # or use '/'
+
+		click_link "Authors"
+		click_link "Add New author"
+
+		fill_in "First name", with: ""
+		fill_in "Last name", with: ""
+
+		click_button "Create Author"
+
+		expect(page).to have_content("Author has not been created")
 	end
 end
